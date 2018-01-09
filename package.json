@@ -1,0 +1,19 @@
+{
+  "name": "moving-tiles",
+  "version": "1.0.0",
+  "description": "Tiles that move!",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paabrown/moving-tiles.git"
+  },
+  "author": "Paul Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paabrown/moving-tiles/issues"
+  },
+  "homepage": "https://github.com/paabrown/moving-tiles#readme"
+}
