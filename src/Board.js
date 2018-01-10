@@ -1,5 +1,5 @@
 // assumptions:
-  // each tileName will be unique
+  // that growTile is passed a valid rowsToGrow and colsToGrow args
 
 
 const { populateStorage, checkForConstructionErrors } = require('./board-constructor-helpers');
@@ -25,33 +25,25 @@ class Board {
     return this.storage[0].length;
   }
 
-  getTileCoordinates(tileObjOrName) {
-    // allow user to pass in tile object or tile name string for lookup
-    const tileName = tileObjOrName.name || tileObjOrName;
-
+  getbigTile() {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
-        const currentTile = this.storage[i][j];
+        const currentTile = this.get(i, j);
 
-        if (currentTile.name === tileName) {
-          return {
-            tile: tile,
-            row: i,
-            column: j
-          }
+        if (tile.isBig) {
+          return currentTile;
         }
       }
     }
   }
 
-  getBigTileInfo() {
+  getTileCoordinates(tileObj) {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
-        const tile = this.storage[i][j];
+        const currentTile = this.get(i , j);
 
-        if (tile.isBig) {
+        if (currentTile === tileObj) {
           return {
-            tile: tile,
             row: i,
             column: j
           }
@@ -76,8 +68,6 @@ class Board {
     return this.storage[row][column];
   }
 
-
-
   shiftRow(rowIndex, units) {
     // positive units is shifting right, negative is shifting left
     // only use if big tile has already been removed
@@ -93,12 +83,34 @@ class Board {
     return this.storage[rowIndex];
   }
 
-  growTile(row, column, ) {
+  growTile(tileRow, tileColumn, rowsToGrow, columnsToGrow) {
+    // for rowsToGrow and TilesToGrow, a positive number indicates to the right/down, and a negative number indicates to the left/up
+    const tile = this.get(tileRow, tileColumn);
+    
+    if (tile.isBig === true) {
+      throw new Error('Error! Trying to grow a tile that already claims to be big!');
+    }
 
+    let smallestRow = tileRow;
+    let smallestColumn = tileColumn;
+
+    if (rowsToGrow < 0) {
+      smallestRow = smallestRow + rowsToGrow;
+    }
+
+    if (columnsToGrow < 0) {
+      smallestColumn = smallestColumn + columnsToGrow;
+    }
+
+    this.set(tile, smallestRow, smallestColumn, true);
+
+    tile.isBig = true;
   }
 
-  shrinkTile(tile) {
+  shrinkTile(tileRow, tileColumn) {
+    const tile = this.get(tileRow, tileColumn);
 
+    tile.isBig = false;
   }
 }
 
