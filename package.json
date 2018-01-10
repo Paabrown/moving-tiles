@@ -4,7 +4,8 @@
   "description": "Tiles that move!",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jest",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/paabrown/moving-tiles/issues"
   },
-  "homepage": "https://github.com/paabrown/moving-tiles#readme"
+  "homepage": "https://github.com/paabrown/moving-tiles#readme",
+  "devDependencies": {
+    "jest": "^22.0.5"
+  },
+  "dependencies": {
+    "webpack": "^3.10.0"
+  }
 }
