@@ -21,6 +21,7 @@
     "jest": "^22.0.5"
   },
   "dependencies": {
+    "jquery": "^3.2.1",
     "webpack": "^3.10.0"
   }
 }

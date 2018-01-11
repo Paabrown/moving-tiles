@@ -1,0 +1,14 @@
+#board {
+  background-color: grey;
+  position: fixed;
+}
+
+.tile {
+  position: fixed;
+  background-color: green;
+  background-size: 100%;
+}
+
+.bigTile {
+  background-color: blue;
+}

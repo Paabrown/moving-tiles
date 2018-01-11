@@ -1,5 +1,7 @@
-const { Board } = require('./Board.js');
+const $ = require('jQuery');
 
-console.log('hi!', Board);
+const { init } = require('./init.js');
 
-window.Board = Board;
+$(document).ready(() => {
+  init();
+})

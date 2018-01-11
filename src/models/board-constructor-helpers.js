@@ -1,17 +1,19 @@
 const { Tile } = require('./Tile.js');
+const { names } = require('../views/tileDesignBank');
 
 function populateStorage(board, sizeOfBigTile) {
-  const randomNames = ['dora', 'mario', 'luigi', 'spongebob', 'blue', 'tommy', 'selena', 'diego', 'garfield'];
-  let nameIndex = 0;
+  let nameIndex = 1;
 
   const bigTile = new Tile('biggie', true);
 
-  board.set(bigTile, 0, 0, true);
+  board.set(bigTile, 0, 0);
+  bigTile.view.render(true);
 
   for (let i = 0; i < board.rows; i++) {
     for (let j = sizeOfBigTile; j < board.columns; j++) {
-      const newTile = new Tile(randomNames[nameIndex++], false);
-      board.set(newTile, i, j, false);
+      console.log('names at nameIndex', names[nameIndex])
+      const newTile = new Tile(names[nameIndex++], false);
+      board.set(newTile, i, j);
     }
   }
 }
