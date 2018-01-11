@@ -2,19 +2,36 @@ const { styleConfig } = require('./styleConfig.js');
 const $ = require('jQuery');
 
 class BoardView {
-  constructor(rows, columns, boardNo) {
+  constructor(rows, columns, boardNo, finalBoardNo) {
     const { tileSide, margin } = styleConfig;
 
     this.boardStyle = {
       width: (tileSide + margin) * columns + margin + 'px',
-      height: (tileSide + margin) * rows + margin + 'px',
+      height: (tileSide + margin) * rows + ((boardNo === finalBoardNo) ? margin : 0) + 'px',
     }
 
     this.styleConfig = styleConfig;
 
     this.$el = $('<div></div>').attr('id', 'board' + boardNo).addClass('board').css(this.boardStyle).appendTo('#app');
 
-    this.currentlyAnimating = false;
+    renderTileSlots(this, rows, columns, tileSide, margin)
+
+    function renderTileSlots(board, rows, columns, tileSide, margin) {
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < columns; j++) {
+          const styling = board.getTileSlotCoords(i, j);
+          styling.width = tileSide;
+          styling.height = tileSide;
+          console.log('styling for thing', styling)
+
+          $('<div></div>')
+            .addClass('tileSlot')
+            .css(styling)
+            .appendTo(`#board${boardNo}`);
+        }
+      }
+    }
+
   }
 
   renderTileMove(tile, row, column) {

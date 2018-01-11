@@ -12,10 +12,10 @@ const { BoardView } = require('../views/BoardView.js');
 const { populateStorage, checkForConstructionErrors, populateTileSlotPositions } = require('./board-constructor-helpers');
 
 class Board {
-  constructor(rows, columns, sizeOfBigTile, boardNo) {
+  constructor(rows, columns, sizeOfBigTile, boardNo, finalBoardNo) {
     checkForConstructionErrors(rows, columns, sizeOfBigTile);
     
-    this.view = new BoardView(rows, columns, boardNo);
+    this.view = new BoardView(rows, columns, boardNo, finalBoardNo);
     
     // model layer
     this.sizeOfBigTile = sizeOfBigTile;
