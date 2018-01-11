@@ -1,4 +1,4 @@
-const $ = require('jQuery');
+const $ = require('jquery');
 
 const { styleConfig } = require('./styleConfig.js');
 const { colors, characters } = require('./tileDesignBank');

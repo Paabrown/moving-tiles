@@ -1,4 +1,4 @@
-const $ = require('jQuery');
+const $ = require('jquery');
 const { App } = require('./models/App.js');
 
 function init() {

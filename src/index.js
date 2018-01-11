@@ -1,4 +1,4 @@
-const $ = require('jQuery');
+const $ = require('jquery');
 
 const { init } = require('./init.js');
 

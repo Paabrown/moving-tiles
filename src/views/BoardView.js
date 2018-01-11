@@ -1,5 +1,5 @@
 const { styleConfig } = require('./styleConfig.js');
-const $ = require('jQuery');
+const $ = require('jquery');
 
 class BoardView {
   constructor(rows, columns, boardNo, finalBoardNo) {
