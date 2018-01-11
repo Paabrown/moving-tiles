@@ -8,8 +8,6 @@ names.forEach(name => {
   characters[name] = `assets/${name}.png`
 })
 
-console.log(characters);
-
 module.exports = {
   colors,
   characters,

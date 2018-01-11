@@ -6,7 +6,7 @@
 
 .board {
   background-color: grey;
-  position: relative;
+  position: absolute;
 }
 
 .tile {

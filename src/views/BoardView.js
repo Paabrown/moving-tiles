@@ -2,18 +2,17 @@ const { styleConfig } = require('./styleConfig.js');
 const $ = require('jQuery');
 
 class BoardView {
-  constructor(rows, columns) {
-    const { tileSide, margin, outerMargin } = styleConfig;
+  constructor(rows, columns, boardNo) {
+    const { tileSide, margin } = styleConfig;
 
     this.boardStyle = {
       width: (tileSide + margin) * columns + margin + 'px',
       height: (tileSide + margin) * rows + margin + 'px',
-      left: outerMargin + 'px',
-      top: outerMargin + 'px'
     }
 
     this.styleConfig = styleConfig;
-    this.$el = $('#board').css(this.boardStyle);
+
+    this.$el = $('<div></div>').attr('id', 'board' + boardNo).addClass('board').css(this.boardStyle).appendTo('#app');
 
     this.currentlyAnimating = false;
   }

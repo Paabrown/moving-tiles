@@ -4,16 +4,14 @@ const { names } = require('../views/tileDesignBank');
 function populateStorage(board, sizeOfBigTile, controllers) {
   let nameIndex = 1;
 
-  const bigTile = new Tile('biggie', true, controllers);
+  const bigTile = new Tile('biggie', true, board.boardNo, controllers);
 
   board.set(bigTile, 0, 0);
   bigTile.view.render(true);
 
   for (let i = 0; i < board.rows; i++) {
     for (let j = sizeOfBigTile; j < board.columns; j++) {
-      console.log('names at nameIndex', names[nameIndex])
-      console.log('controllers in pop storage', controllers);
-      const newTile = new Tile(names[nameIndex++], false, controllers);
+      const newTile = new Tile(names[nameIndex++], false, board.boardNo, controllers);
       board.set(newTile, i, j);
     }
   }

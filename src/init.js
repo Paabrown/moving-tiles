@@ -1,12 +1,10 @@
 const $ = require('jQuery');
-const { Board } = require('./models/Board.js');
+const { App } = require('./models/App.js');
 
 function init() {
-  const board = new Board(2, 6, 2);
-
-  console.log('init!')
+  const app = new App(2);
   
-  window.board = board;
+  window.App = App;
 }
 
 module.exports = {

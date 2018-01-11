@@ -3,7 +3,7 @@ const { styleConfig } = require('./styleConfig.js');
 const { colors, characters } = require('./tileDesignBank');
 
 class TileView {
-  constructor(name, isBig, controllers) {
+  constructor(name, isBig, boardNo, controllers) {
     const { tileSide, margin, outerMargin } = styleConfig;
     const { handleBigTileChange } = controllers;
     const imageUrl = characters[name];
@@ -20,7 +20,7 @@ class TileView {
       .addClass('tile')
       .attr('id', this.name)
       .css(this.tileStyle)
-      .appendTo('#board')
+      .appendTo(`#board${boardNo}`)
       .on('mouseenter', (e) => {
         handleBigTileChange(e.target.id);
       });
@@ -30,7 +30,7 @@ class TileView {
 
     const options = {
       queue: false,
-      duration: 800,
+      duration: 800
     }
 
     this.$el.animate(coords, options);
@@ -47,15 +47,18 @@ class TileView {
       this.tileStyle.height = (this.tileStyle.height - margin) / 2;
     }
 
-    this.$el.css('z-index', 100);
+    if (isBig) {
+      this.$el.css('z-index', 1);
 
+      setTimeout(() => {
+        console.log('callback running!')
+        this.$el.css('z-index', 0)
+      }, 801);
+    }
+    
     const options = {
       queue: false,
-      duration: 400,
-      complete: () => {
-        console.log('zindex1')
-        this.$el.css('z-index', 1);
-      }
+      duration: 400
     }
      
     this.$el.animate(this.tileStyle, options);
