@@ -1,37 +1,21 @@
-
-// assumptions:
-  // that growTile is passed a valid rowsToGrow and colsToGrow args
-  // that all tiles are already on the board, and placed their in constructor
-
-
-// to dos
-  // fix it so the big tile only resides on one place
-  // fix it so that a growing tile can grow to a larger shape depending on the programmer
-
 const { BoardView } = require('../views/BoardView.js');
-const { populateStorage, checkForConstructionErrors, populateTileSlotPositions } = require('./board-constructor-helpers');
+const { populateStorage, checkForConstructionErrors } = require('./board-constructor-helpers');
 
 class Board {
-  constructor(rows, columns, sizeOfBigTile, boardNo, finalBoardNo) {
+  constructor(rows, columns, sizeOfBigTile, boardNo, finalBoardNo, currentCharInd) {
     checkForConstructionErrors(rows, columns, sizeOfBigTile);
     
-    this.view = new BoardView(rows, columns, boardNo, finalBoardNo);
-    
-    // model layer
     this.sizeOfBigTile = sizeOfBigTile;
     this.storage = new Array(rows).fill(null).map(row => {
       return new Array(columns).fill(null);
     });
-
     this.controllers = {
       handleBigTileChange: this.handleBigTileChange.bind(this)
     }
-
     this.boardNo = boardNo;
-
-    populateStorage(this, sizeOfBigTile, this.controllers);
+    this.view = new BoardView(rows, columns, boardNo, finalBoardNo);
     
-    // connection to view layer
+    populateStorage(this, currentCharInd, this.controllers);
   }
 
   get rows() {
@@ -71,8 +55,6 @@ class Board {
   }
 
   set(tile, row, column) {
-    // console.log('about to set ', row, column);
-    // console.log('about to set tile ', tile);
     this.storage[row][column] = tile;
 
     if (tile) {
@@ -85,14 +67,11 @@ class Board {
   }
 
   removeTile(tileObj) {
-    console.log('looking to remove ', tileObj.name);
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
         const currentTile = this.get(i , j);
         
         if (currentTile === tileObj) {
-          console.log('currenttile.name, tileobj.name', currentTile.name, tileObj.name)
-          console.log('i, j', i, j);
           this.set(null, i, j);
         }
       }
@@ -101,7 +80,6 @@ class Board {
 
   shiftRow(rowIndex, startingIndex, endingIndex, units) {
     // positive units is shifting right, negative is shifting left
-    // only use if big tile has already been removed
 
     const rowCopy = this.storage[rowIndex].slice();
 
@@ -115,12 +93,7 @@ class Board {
   }
 
   growTile(tile, tileRow, tileColumn, rowsToGrow, columnsToGrow) {
-    console.log('growTile boardjs 104 - tileRow, tileColumn', tileRow, tileColumn)
-    console.log('growTile boardjs 105 - rowsToGrow, columnsToGrow', rowsToGrow, columnsToGrow)
-    // for rowsToGrow and columnsToGrow, a positive number indicates to the right/down, and a negative number indicates to the left/up
-    // const tile = this.get(tileRow, tileColumn);
-
-    // this.removeTile(tile);
+    // a positive number indicates to the right/down, and a negative number indicates to the left/up
 
     let smallestRow = tileRow;
     let smallestColumn = tileColumn;
@@ -134,20 +107,11 @@ class Board {
     }
     
     tile.grow();
-    console.log('boardjs 120 - smallestRow, smallestColumn', smallestRow, smallestColumn);
     this.set(tile, smallestRow, smallestColumn);
-
   }
 
   shrinkTile(tile, tileRow, tileColumn, rowsToShrink, columnsToShrink) {
-    console.log('boardjs 129 - tileRow, tileColumn', tileRow, tileColumn)
-    console.log('boardjs 130 - rowsToShrink, columnsToShrink', rowsToShrink, columnsToShrink)
     // for rowsToShrink and columnsToShrink, a positive number indicates shrinking to the right/down, and a negative number indicates to the left/up
-    // for now we'll assume that only the sign of rowsToShrink and columnsToShrink matter
-
-    // const tile = this.get(tileRow, tileColumn);
-
-    // this.removeTile(tile);
 
     if (rowsToShrink > 0) {
       tileRow += rowsToShrink;
@@ -173,8 +137,6 @@ class Board {
     const oldBigTile = this.getbigTile();
     const { row: oldBigTileRow, column: oldBigTileColumn } = this.getTileCoordinates(oldBigTile);
 
-    // a positive number means shifting tiles to the right
-    // a negative number means shifting tiles to the left
     let colShiftDirection = ((oldBigTileColumn - newBigTileColumn) > 0) ? 1 : -1;
     let rowShiftDirection = (newBigTileRow === 0) ? 1 : -1;
 
@@ -197,18 +159,10 @@ class Board {
       this.shiftRow(i, startingIndex, endingIndex, (sizeOfBigTile - isSameRowAsGrower) * colShiftDirection );
     }
 
-    // this.set(newBigTile, newBigTileRow, newBigTileColumn)
-    // this.set(oldBigTile, oldBigTileRow, oldBigTileColumn);
-
     this.growTile(newBigTile, newBigTileRow, newBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection, (sizeOfBigTile - 1) * colShiftDirection);
 
     this.shrinkTile(oldBigTile, oldBigTileRow, oldBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection * -1, (sizeOfBigTile - 1) * colShiftDirection);
 
-    // the ones that should shift are based on being on the shrink-side of the newBigTile
-    // if the colsToGrowAndShrink are positive, that means we are shifting RIGHT (positive)
-    // if it is negative, that means we are shifting LEFT (negative)
-    // the row the new big one is on should shift by one less than the bigsize
-    // all other rows should shift by 
   }
 }
 

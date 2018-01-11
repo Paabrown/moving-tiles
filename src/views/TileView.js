@@ -5,7 +5,7 @@ const { colors, characters } = require('./tileDesignBank');
 
 class TileView {
   constructor(name, isBig, boardNo, controllers) {
-    const { tileSide, margin, outerMargin } = styleConfig;
+    const { tileSide } = styleConfig;
     const { handleBigTileChange } = controllers;
     const imageUrl = characters[name];
 
@@ -33,7 +33,6 @@ class TileView {
   }
 
   move(coords) {
-
     const options = {
       queue: false,
       duration: 800
@@ -43,39 +42,32 @@ class TileView {
   }
 
   render(isBig) {
-    const { tileSide, margin, outerMargin } = styleConfig;
+    const { margin } = styleConfig;
 
     if (isBig) {
-      console.log('colors', colors)
       let ranNum = Math.floor(Math.random() * colors.length)
-      console.log('rannum', ranNum);
       let color = colors[ranNum];
-      console.log('color', color);
 
-      console.log('color', color);
       this.tileStyle.width = this.tileStyle.width * 2 + margin;
       this.tileStyle.height = this.tileStyle.height * 2 + margin;
       this.staticStyle.backgroundColor = color;
+
+      this.$el.css('z-index', 1);
+
+      setTimeout(() => {
+        this.$el.css('z-index', 0);
+      }, 801);
+
     } else {
       this.tileStyle.width = (this.tileStyle.width - margin) / 2;
       this.tileStyle.height = (this.tileStyle.height - margin) / 2;
       this.staticStyle.backgroundColor = 'transparent';
     }
 
-    if (isBig) {
-      this.$el.css('z-index', 1);
-
-      setTimeout(() => {
-        this.$el.css('z-index', 0)
-      }, 801);
-    }
-    
     const options = {
       queue: false,
       duration: 400
     }
-
-    console.log('this.tilestyle', this.tileStyle);
      
     this.$el.css(this.staticStyle);
     this.$el.animate(this.tileStyle, options);

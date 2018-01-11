@@ -19,9 +19,9 @@
 .tile {
   position: absolute;
   transition: background-color 0.2s ease;
-  background-size: 250%;
+  background-size: 230%;
   background-position-x: 50%;
-  background-position-y: 50%;
+  background-position-y: 45%;
   background-repeat: no-repeat;
   z-index: 0;
 }

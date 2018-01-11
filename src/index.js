@@ -4,4 +4,4 @@ const { init } = require('./init.js');
 
 $(document).ready(() => {
   init();
-})
+});

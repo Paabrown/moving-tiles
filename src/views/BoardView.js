@@ -22,7 +22,6 @@ class BoardView {
           const styling = board.getTileSlotCoords(i, j);
           styling.width = tileSide;
           styling.height = tileSide;
-          console.log('styling for thing', styling)
 
           $('<div></div>')
             .addClass('tileSlot')
@@ -37,11 +36,11 @@ class BoardView {
   renderTileMove(tile, row, column) {
     const coords = this.getTileSlotCoords(row, column);
 
-    tile.view.move(coords)
+    tile.view.move(coords);
   }
 
   getTileSlotCoords(row, column) {
-    const { tileSide, margin, outerMargin } = styleConfig;
+    const { tileSide, margin } = styleConfig;
 
     return {
       left: (tileSide + margin) * column + margin + 'px',
