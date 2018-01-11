@@ -13,6 +13,8 @@ How to run the program:
 npm install && npm start
 ```
 
+3) Navigate your browser to http://localhost:3000/
+
 Hope you enjoy!
 
 ## Authors

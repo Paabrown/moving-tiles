@@ -162,7 +162,6 @@ class Board {
     this.growTile(newBigTile, newBigTileRow, newBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection, (sizeOfBigTile - 1) * colShiftDirection);
 
     this.shrinkTile(oldBigTile, oldBigTileRow, oldBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection * -1, (sizeOfBigTile - 1) * colShiftDirection);
-
   }
 }
 
