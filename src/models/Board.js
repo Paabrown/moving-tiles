@@ -2,19 +2,18 @@ const { BoardView } = require('../views/BoardView.js');
 const { populateStorage, checkForConstructionErrors } = require('./board-constructor-helpers');
 
 class Board {
-  constructor(rows, columns, sizeOfBigTile, boardNo, finalBoardNo, currentCharInd) {
-    checkForConstructionErrors(rows, columns, sizeOfBigTile);
-    
+  constructor(rows, columns, sizeOfBigTile, boardNo, finalBoardNo, currentCharInd) { 
     this.sizeOfBigTile = sizeOfBigTile;
+    this.boardNo = boardNo;
+    this.view = new BoardView(rows, columns, boardNo, finalBoardNo);
     this.storage = new Array(rows).fill(null).map(row => {
       return new Array(columns).fill(null);
     });
     this.controllers = {
       handleBigTileChange: this.handleBigTileChange.bind(this)
     }
-    this.boardNo = boardNo;
-    this.view = new BoardView(rows, columns, boardNo, finalBoardNo);
     
+    checkForConstructionErrors(rows, columns, sizeOfBigTile);
     populateStorage(this, currentCharInd, this.controllers);
   }
 
@@ -80,11 +79,11 @@ class Board {
 
   shiftRow(rowIndex, startingIndex, endingIndex, units) {
     // positive units is shifting right, negative is shifting left
-
     const rowCopy = this.storage[rowIndex].slice();
 
     for (let j = startingIndex; j <= endingIndex; j++) {
       let indOfTileToInsert = j - units;
+      // don't grab the tile if it's not in the range of tiles shifted
       let tileToInsert = (indOfTileToInsert >= startingIndex && indOfTileToInsert <= endingIndex) ? rowCopy[indOfTileToInsert] : null;
       this.set(tileToInsert, rowIndex, j);
     }
@@ -92,9 +91,8 @@ class Board {
     return this.storage[rowIndex];
   }
 
-  growTile(tile, tileRow, tileColumn, rowsToGrow, columnsToGrow) {
+  triggerTileGrow(tile, tileRow, tileColumn, rowsToGrow, columnsToGrow) {
     // a positive number indicates to the right/down, and a negative number indicates to the left/up
-
     let smallestRow = tileRow;
     let smallestColumn = tileColumn;
 
@@ -110,7 +108,7 @@ class Board {
     this.set(tile, smallestRow, smallestColumn);
   }
 
-  shrinkTile(tile, tileRow, tileColumn, rowsToShrink, columnsToShrink) {
+  triggerTileShrink(tile, tileRow, tileColumn, rowsToShrink, columnsToShrink) {
     // for rowsToShrink and columnsToShrink, a positive number indicates shrinking to the right/down, and a negative number indicates to the left/up
 
     if (rowsToShrink > 0) {
@@ -127,8 +125,9 @@ class Board {
   }
 
   handleBigTileChange(tileName) {
+    // coordinates board changes when user causes the big tile to change
     const { tile: newBigTile, row: newBigTileRow, column: newBigTileColumn} = this.getTileCoordinates({}, tileName);
-
+    
     if (newBigTile.isBig) {
       return;
     }
@@ -159,9 +158,9 @@ class Board {
       this.shiftRow(i, startingIndex, endingIndex, (sizeOfBigTile - isSameRowAsGrower) * colShiftDirection );
     }
 
-    this.growTile(newBigTile, newBigTileRow, newBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection, (sizeOfBigTile - 1) * colShiftDirection);
+    this.triggerTileGrow(newBigTile, newBigTileRow, newBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection, (sizeOfBigTile - 1) * colShiftDirection);
 
-    this.shrinkTile(oldBigTile, oldBigTileRow, oldBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection * -1, (sizeOfBigTile - 1) * colShiftDirection);
+    this.triggerTileShrink(oldBigTile, oldBigTileRow, oldBigTileColumn, (sizeOfBigTile - 1) * rowShiftDirection * -1, (sizeOfBigTile - 1) * colShiftDirection);
   }
 }
 

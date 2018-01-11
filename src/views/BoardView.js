@@ -9,9 +9,6 @@ class BoardView {
       width: (tileSide + margin) * columns + margin + 'px',
       height: (tileSide + margin) * rows + ((boardNo === finalBoardNo) ? margin : 0) + 'px',
     }
-
-    this.styleConfig = styleConfig;
-
     this.$el = $('<div></div>').attr('id', 'board' + boardNo).addClass('board').css(this.boardStyle).appendTo('#app');
 
     renderTileSlots(this, rows, columns, tileSide, margin)

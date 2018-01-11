@@ -1,7 +1,7 @@
 const $ = require('jquery');
 
-const { init } = require('./init.js');
+const { App } = require('./models/App.js');
 
 $(document).ready(() => {
-  init();
+  new App(2);
 });

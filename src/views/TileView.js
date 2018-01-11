@@ -10,17 +10,14 @@ class TileView {
     const imageUrl = characters[name];
 
     this.name = name;
-
     this.tileStyle = {
       width: tileSide,
       height: tileSide,
     }
-
     this.staticStyle = {
       backgroundImage: `url(${imageUrl})`,
       backgroundColor: 'transparent'
     }
-
     this.$el = $('<div></div>')
       .addClass('tile')
       .attr('id', this.name)
@@ -52,6 +49,7 @@ class TileView {
       this.tileStyle.height = this.tileStyle.height * 2 + margin;
       this.staticStyle.backgroundColor = color;
 
+      // make sure the growing tile overlaps all others then turns back
       this.$el.css('z-index', 1);
 
       setTimeout(() => {

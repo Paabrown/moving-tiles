@@ -8,11 +8,11 @@ class App {
     
     let currentTilePersonalityIndex = 0;
 
-    for (let i = 0; i < numOfBoards; i++) {
-      new Board(rows, columns, sizeOfBigTile, i, numOfBoards - 1, currentTilePersonalityIndex)
+    for (let boardNo = 0; boardNo < numOfBoards; boardNo++) {
+      new Board(rows, columns, sizeOfBigTile, boardNo, numOfBoards - 1, currentTilePersonalityIndex)
 
-      // keeps track of the number of tile personalities used from our db with each board created
-      currentTilePersonalityIndex += rows * (columns - 2) + 1;
+      // keeps track of the number of tile personalities used from our db with each new board created
+      currentTilePersonalityIndex += rows * (columns - sizeOfBigTile) + 1;
     }
   }
 }
