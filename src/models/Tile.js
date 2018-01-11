@@ -1,12 +1,13 @@
 const { TileView } = require('../views/TileView.js');
 
 class Tile {
-  constructor(name, isBig) {
+  constructor(name, isBig, controllers) {
     console.log('name in tile', name);
     this.name = name;
     this.isBig = isBig;
 
-    this.view = new TileView(name, isBig);
+    console.log('controllers in tile', controllers);
+    this.view = new TileView(name, isBig, controllers);
   }
 
   grow() {

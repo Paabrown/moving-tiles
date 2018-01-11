@@ -1,3 +1,4 @@
+
 // assumptions:
   // that growTile is passed a valid rowsToGrow and colsToGrow args
   // that all tiles are already on the board, and placed their in constructor
@@ -21,7 +22,12 @@ class Board {
     this.storage = new Array(rows).fill(null).map(row => {
       return new Array(columns).fill(null);
     });
-    populateStorage(this, sizeOfBigTile);
+
+    this.controllers = {
+      handleBigTileChange: this.handleBigTileChange.bind(this)
+    }
+
+    populateStorage(this, sizeOfBigTile, this.controllers);
     
     // connection to view layer
   }
@@ -46,13 +52,14 @@ class Board {
     }
   }
 
-  getTileCoordinates(tileObj) {
+  getTileCoordinates(tileObj, tileName) {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
         const currentTile = this.get(i , j);
 
-        if (currentTile === tileObj) {
+        if (currentTile === tileObj || (currentTile && currentTile.name === tileName)) {
           return {
+            tile: currentTile,
             row: i,
             column: j
           }
@@ -153,28 +160,25 @@ class Board {
 
   }
 
-  handleBigTileChange(newBigTileRow, newBigTileColumn) {
-    console.log('board at beginning', this.storage[0][2]);
+  handleBigTileChange(tileName) {
+    const { tile: newBigTile, row: newBigTileRow, column: newBigTileColumn} = this.getTileCoordinates({}, tileName);
+
+    if (newBigTile.isBig) {
+      return;
+    }
+
     const sizeOfBigTile = this.sizeOfBigTile;
-    const newBigTile = this.get(newBigTileRow, newBigTileColumn);
     const oldBigTile = this.getbigTile();
     const { row: oldBigTileRow, column: oldBigTileColumn } = this.getTileCoordinates(oldBigTile);
 
     // a positive number means shifting tiles to the right
     // a negative number means shifting tiles to the left
     let colShiftDirection = ((oldBigTileColumn - newBigTileColumn) > 0) ? 1 : -1;
-    console.log('boardjs - colShiftDirection', colShiftDirection)
     let rowShiftDirection = (newBigTileRow === 0) ? 1 : -1;
-    console.log('boardjs - rowShiftDirection', rowShiftDirection);
 
-    console.log('board at line167', this.storage[0][2]);
     this.removeTile(oldBigTile);
-    console.log('board at line169', this.storage[0][2]);
     this.removeTile(newBigTile);
-    console.log('board at line171', this.storage[0][2]);
-
     
-    console.log(this.storage);
     let startingIndex;
     let endingIndex;
 
@@ -186,10 +190,8 @@ class Board {
       endingIndex = newBigTileColumn;
     }
 
-    console.log('boardjs starting ending', startingIndex, endingIndex);
     for (let i = 0; i < this.rows; i++) {
       let isSameRowAsGrower = i === newBigTileRow;
-      console.log('about to shift row i, units', i, sizeOfBigTile, isSameRowAsGrower)
       this.shiftRow(i, startingIndex, endingIndex, (sizeOfBigTile - isSameRowAsGrower) * colShiftDirection );
     }
 
@@ -205,7 +207,6 @@ class Board {
     // if it is negative, that means we are shifting LEFT (negative)
     // the row the new big one is on should shift by one less than the bigsize
     // all other rows should shift by 
-    console.log('boardatend', this.storage[0][2]);
   }
 }
 

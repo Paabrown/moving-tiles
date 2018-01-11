@@ -14,20 +14,22 @@ class BoardView {
 
     this.styleConfig = styleConfig;
     this.$el = $('#board').css(this.boardStyle);
+
+    this.currentlyAnimating = false;
   }
 
   renderTileMove(tile, row, column) {
     const coords = this.getTileSlotCoords(row, column);
 
-    tile.view.$el.animate(coords);
+    tile.view.move(coords)
   }
 
   getTileSlotCoords(row, column) {
     const { tileSide, margin, outerMargin } = styleConfig;
 
     return {
-      left: outerMargin + (tileSide + margin) * column + margin + 'px',
-      top: outerMargin + (tileSide + margin) * row + margin + 'px'
+      left: (tileSide + margin) * column + margin + 'px',
+      top:  (tileSide + margin) * row + margin + 'px'
     }
   }
 }
